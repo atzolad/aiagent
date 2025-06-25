@@ -8,19 +8,18 @@ def write_file(working_directory, file_path, content):
 
     try:
 
-        if not abs_file_path.startswith(abs_working_directory):
-            return (f'Error: Cannot read "{file_path}" as it is outside the permitted working directory')
+        if os.path.commonpath([abs_file_path, abs_working_directory]) != abs_working_directory:
+            return f'Error: Cannot write "{file_path}" as it is outside the permitted working directory'
 
-        if not os.path.exists(abs_file_path):
-            file_directory = os.path.dirname(abs_file_path)
-            os.makedirs(file_directory, mode=0o777, exist_ok=True)
+        file_directory = os.path.dirname(abs_file_path)
+        os.makedirs(file_directory, exist_ok=True)
         
-        with open(abs_file_path, 'w', ) as file:
+        with open(abs_file_path, 'w') as file:
             file.write(content)
             
 
-        return(f'Successfully wrote to "{file_path}" ({len(content)} characters written)')
+        return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
 
 
     except Exception as e:
-        return(f"Error: {e}")
+        return f"Error: {e}"

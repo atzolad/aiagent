@@ -8,12 +8,12 @@ def get_files_info(working_directory, directory=None):
 
     try:
 
-        if not abs_directory.startswith(abs_working_directory):
-            return (f'Error: Cannot list "{directory}" as it is outside the permitted working directory')
+        if os.path.commonpath([abs_directory, abs_working_directory]) != abs_working_directory:
+            return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
             #print(f'Error: Cannot list "{directory}" as it is outside the permitted working directory')
 
         if not os.path.isdir(abs_directory):
-            return (f'Error: "{directory}" is not a directory')
+            return f'Error: "{directory}" is not a directory'
             #print(f'Error: "{directory}" is not a directory')
         
         else:
@@ -24,18 +24,15 @@ def get_files_info(working_directory, directory=None):
             for file in contents:
                 file_name = file
                 file_path = os.path.join(abs_directory, file)
-                file_size = os.path.getsize(file_path)
+                file_size = g
                 is_file_dir = os.path.isdir(file_path)
                 #print(f"- {file_name}: file_size={file_size} bytes, is_dir={is_file_dir}")
                 contents_list.append(f"- {file_name}: file_size={file_size} bytes, is_dir={is_file_dir}")
 
-            return('\n'.join(contents_list))
+            return '\n'.join(contents_list)
             #print(('\n'.join(contents_list)))
 
     except Exception as e:
-        return(f"Error: {e}")
+        return f"Error: {e}"
 
-'''get_files_info("calculator", ".")
-get_files_info("calculator", "pkg")
-get_files_info("calculator", "/bin")
-get_files_info("calculator", "../")'''
+
