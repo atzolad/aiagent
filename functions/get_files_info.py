@@ -1,7 +1,12 @@
 import os
 
 def get_files_info(working_directory, directory=None):
-    relative_directory = os.path.join(working_directory, directory)
+
+    if directory is None:
+        relative_directory = working_directory
+    else:
+        relative_directory = os.path.join(working_directory, directory)
+
     abs_directory = os.path.abspath(relative_directory)
     abs_working_directory = os.path.abspath(working_directory)
 
@@ -24,7 +29,7 @@ def get_files_info(working_directory, directory=None):
             for file in contents:
                 file_name = file
                 file_path = os.path.join(abs_directory, file)
-                file_size = g
+                file_size = os.path.getsize(file_path)
                 is_file_dir = os.path.isdir(file_path)
                 #print(f"- {file_name}: file_size={file_size} bytes, is_dir={is_file_dir}")
                 contents_list.append(f"- {file_name}: file_size={file_size} bytes, is_dir={is_file_dir}")
